@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Raw data from Suffolk County — rawdat • pepreporting</title>
+<title>Raw beach pathogen data from Suffolk County — entdat • pepreporting</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Raw data from Suffolk County — rawdat" />
-<meta property="og:description" content="Raw data from Suffolk County" />
+<meta property="og:title" content="Raw beach pathogen data from Suffolk County — entdat" />
+<meta property="og:description" content="Raw beach pathogen data from Suffolk County" />
 
 
 
@@ -118,16 +118,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Raw data from Suffolk County</h1>
+    <h1>Raw beach pathogen data from Suffolk County</h1>
     
-    <div class="hidden name"><code>rawdat.Rd</code></div>
+    <div class="hidden name"><code>entdat.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Raw data from Suffolk County</p>
+    <p>Raw beach pathogen data from Suffolk County</p>
     </div>
 
-    <pre class="usage"><span class='va'>rawdat</span></pre>
+    <pre class="usage"><span class='va'>entdat</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -136,15 +136,15 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other utilities: 
-<code><a href='entdat.html'>entdat</a></code>,
 <code><a href='pepstations.html'>pepstations</a></code>,
-<code><a href='peptargets.html'>peptargets</a></code></p></div>
+<code><a href='peptargets.html'>peptargets</a></code>,
+<code><a href='rawdat.html'>rawdat</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"currentdata.xlsx"</span>, package<span class='op'>=</span><span class='st'>"pepreporting"</span><span class='op'>)</span>
-<span class='va'>rawdat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_pepwq.html'>read_pepwq</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>rawdat</span>, file <span class='op'>=</span> <span class='st'>'data/rawdat.RData'</span>, compress <span class='op'>=</span> <span class='st'>'xz'</span><span class='op'>)</span>
+<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"enterodata.xlsx"</span>, package<span class='op'>=</span><span class='st'>"pepreporting"</span><span class='op'>)</span>
+<span class='va'>entdat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_pepent.html'>read_pepent</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>entdat</span>, file <span class='op'>=</span> <span class='st'>'data/entdat.RData'</span>, compress <span class='op'>=</span> <span class='st'>'xz'</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
