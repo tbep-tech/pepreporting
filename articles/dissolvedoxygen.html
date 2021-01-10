@@ -103,13 +103,13 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DateTime <span class="op">=</span> <span class="fu">with_tz</span><span class="op">(</span><span class="va">DateTime</span>, tzone <span class="op">=</span> <span class="st">'America/Jamaica'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dodat</span><span class="op">)</span>
-<span class="co">#&gt;           site            DateTime do_mgl</span>
-<span class="co">#&gt; 30102 01304562 2013-01-01 00:00:00   11.1</span>
-<span class="co">#&gt; 30103 01304562 2013-01-01 00:06:00   11.1</span>
-<span class="co">#&gt; 30104 01304562 2013-01-01 00:12:00   11.1</span>
-<span class="co">#&gt; 30105 01304562 2013-01-01 00:18:00   11.1</span>
-<span class="co">#&gt; 30106 01304562 2013-01-01 00:24:00   11.1</span>
-<span class="co">#&gt; 30107 01304562 2013-01-01 00:30:00   11.1</span></code></pre></div>
+<span class="co">#&gt;       site            DateTime do_mgl</span>
+<span class="co">#&gt; 1 01304200 2013-01-01 00:00:00   11.2</span>
+<span class="co">#&gt; 2 01304200 2013-01-01 00:06:00   11.2</span>
+<span class="co">#&gt; 3 01304200 2013-01-01 00:12:00   11.2</span>
+<span class="co">#&gt; 4 01304200 2013-01-01 00:18:00   11.2</span>
+<span class="co">#&gt; 5 01304200 2013-01-01 00:24:00   11.2</span>
+<span class="co">#&gt; 6 01304200 2013-01-01 00:30:00   11.2</span></code></pre></div>
 <p>A plot of the raw data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">dodat</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">DateTime</span>, y <span class="op">=</span> <span class="va">do_mgl</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -142,20 +142,20 @@
     .groups <span class="op">=</span> <span class="st">'drop'</span>
   <span class="op">)</span> 
 <span class="va">dlysum</span>
-<span class="co">#&gt; # A tibble: 2,740 x 4</span>
+<span class="co">#&gt; # A tibble: 2,857 x 4</span>
 <span class="co">#&gt;    Date       acute chronic do_mgl</span>
 <span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 2013-01-01     0       0   11.0</span>
-<span class="co">#&gt;  2 2013-01-02     0       0   11.2</span>
+<span class="co">#&gt;  2 2013-01-02     0       0   11.3</span>
 <span class="co">#&gt;  3 2013-01-03     0       0   11.6</span>
-<span class="co">#&gt;  4 2013-01-04     0       0   11.7</span>
-<span class="co">#&gt;  5 2013-01-05     0       0   11.6</span>
-<span class="co">#&gt;  6 2013-01-06     0       0   11.8</span>
-<span class="co">#&gt;  7 2013-01-07     0       0   11.9</span>
-<span class="co">#&gt;  8 2013-01-08     0       0   12.1</span>
-<span class="co">#&gt;  9 2013-01-09     0       0   12.0</span>
-<span class="co">#&gt; 10 2013-01-10     0       0   11.8</span>
-<span class="co">#&gt; # … with 2,730 more rows</span></code></pre></div>
+<span class="co">#&gt;  4 2013-01-04     0       0   11.8</span>
+<span class="co">#&gt;  5 2013-01-05     0       0   11.7</span>
+<span class="co">#&gt;  6 2013-01-06     0       0   11.9</span>
+<span class="co">#&gt;  7 2013-01-07     0       0   12.1</span>
+<span class="co">#&gt;  8 2013-01-08     0       0   12.2</span>
+<span class="co">#&gt;  9 2013-01-09     0       0   12.2</span>
+<span class="co">#&gt; 10 2013-01-10     0       0   11.9</span>
+<span class="co">#&gt; # … with 2,847 more rows</span></code></pre></div>
 <p>Indicator columns for acute and chronic indicate if DO concentrations were below the respective threshold at any point during each day. To address the duration of exposure to undersatured conditions, a cumulative tally of the number of days at which dissolved oxygen fell below is threshold is also calculated. These are present in the <code>acute_cumsum</code> and <code>acute_chronicsum</code> columns.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="va">dlysum</span> <span class="op">%&gt;%</span> 
@@ -170,21 +170,21 @@
   <span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">grp</span><span class="op">)</span>
 <span class="va">dlysum</span>
-<span class="co">#&gt; # A tibble: 2,740 x 9</span>
-<span class="co">#&gt; # Groups:   grp, yr, mo [1,553]</span>
+<span class="co">#&gt; # A tibble: 2,857 x 9</span>
+<span class="co">#&gt; # Groups:   grp, yr, mo [1,661]</span>
 <span class="co">#&gt;      grp Date       acute chronic do_mgl    yr    mo acute_cumsum chronic_cumsum</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;</span>
 <span class="co">#&gt;  1     1 2013-01-01     0       0   11.0  2013     1            0              0</span>
-<span class="co">#&gt;  2     2 2013-01-02     0       0   11.2  2013     1            0              0</span>
+<span class="co">#&gt;  2     2 2013-01-02     0       0   11.3  2013     1            0              0</span>
 <span class="co">#&gt;  3     3 2013-01-03     0       0   11.6  2013     1            0              0</span>
-<span class="co">#&gt;  4     4 2013-01-04     0       0   11.7  2013     1            0              0</span>
-<span class="co">#&gt;  5     5 2013-01-05     0       0   11.6  2013     1            0              0</span>
-<span class="co">#&gt;  6     6 2013-01-06     0       0   11.8  2013     1            0              0</span>
-<span class="co">#&gt;  7     7 2013-01-07     0       0   11.9  2013     1            0              0</span>
-<span class="co">#&gt;  8     8 2013-01-08     0       0   12.1  2013     1            0              0</span>
-<span class="co">#&gt;  9     9 2013-01-09     0       0   12.0  2013     1            0              0</span>
-<span class="co">#&gt; 10    10 2013-01-10     0       0   11.8  2013     1            0              0</span>
-<span class="co">#&gt; # … with 2,730 more rows</span></code></pre></div>
+<span class="co">#&gt;  4     4 2013-01-04     0       0   11.8  2013     1            0              0</span>
+<span class="co">#&gt;  5     5 2013-01-05     0       0   11.7  2013     1            0              0</span>
+<span class="co">#&gt;  6     6 2013-01-06     0       0   11.9  2013     1            0              0</span>
+<span class="co">#&gt;  7     7 2013-01-07     0       0   12.1  2013     1            0              0</span>
+<span class="co">#&gt;  8     8 2013-01-08     0       0   12.2  2013     1            0              0</span>
+<span class="co">#&gt;  9     9 2013-01-09     0       0   12.2  2013     1            0              0</span>
+<span class="co">#&gt; 10    10 2013-01-10     0       0   11.9  2013     1            0              0</span>
+<span class="co">#&gt; # … with 2,847 more rows</span></code></pre></div>
 <p>The daily data provides the basis for summarizing seasonal information by month. Summarizing by month distills in the information into an easily digestible format for plotting.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mosum</span> <span class="op">&lt;-</span> <span class="va">dlysum</span> <span class="op">%&gt;%</span> 
@@ -204,16 +204,16 @@
 <span class="co">#&gt; # A tibble: 96 x 7</span>
 <span class="co">#&gt;       yr mo    do_mgl acute acute_cumsum chronic chronic_cumsum</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;ord&gt;  &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  2013 Jan    11.6  0                0   0                  0</span>
-<span class="co">#&gt;  2  2013 Feb    11.9  0                0   0                  0</span>
-<span class="co">#&gt;  3  2013 Mar    11.7  0                0   0                  0</span>
-<span class="co">#&gt;  4  2013 Apr     9.55 0                0   0                  0</span>
-<span class="co">#&gt;  5  2013 May     7.85 0                0   0.161              1</span>
-<span class="co">#&gt;  6  2013 Jun     5.75 0.3              5   0.767             13</span>
-<span class="co">#&gt;  7  2013 Jul     3.14 0.967           29   1                 30</span>
-<span class="co">#&gt;  8  2013 Aug     3.20 0.893           14   0.964             22</span>
-<span class="co">#&gt;  9  2013 Sep     4.72 0.667            6   0.933             17</span>
-<span class="co">#&gt; 10  2013 Oct     5.97 0.36             8   0.64              12</span>
+<span class="co">#&gt;  1  2013 Jan    11.7  0                0   0                  0</span>
+<span class="co">#&gt;  2  2013 Feb    11.8  0                0   0                  0</span>
+<span class="co">#&gt;  3  2013 Mar    11.3  0                0   0                  0</span>
+<span class="co">#&gt;  4  2013 Apr     9.67 0                0   0                  0</span>
+<span class="co">#&gt;  5  2013 May     8.13 0                0   0.161              1</span>
+<span class="co">#&gt;  6  2013 Jun     6.59 0.3              5   0.767             13</span>
+<span class="co">#&gt;  7  2013 Jul     4.94 0.935           29   0.968             30</span>
+<span class="co">#&gt;  8  2013 Aug     5.32 0.806           14   0.871             15</span>
+<span class="co">#&gt;  9  2013 Sep     6.02 0.667            6   0.933             17</span>
+<span class="co">#&gt; 10  2013 Oct     7.29 0.290            8   0.516             12</span>
 <span class="co">#&gt; # … with 86 more rows</span></code></pre></div>
 <p>There are several ways the data were summarized:</p>
 <ol style="list-style-type: decimal">
