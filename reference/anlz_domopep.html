@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count beach exceedances for enterococcus — anlz_entpep • pepreporting</title>
+<title>Analyze monthly DO values relative to threshold — anlz_domopep • pepreporting</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Count beach exceedances for enterococcus — anlz_entpep" />
-<meta property="og:description" content="Count beach exceedances for enterococcus" />
+<meta property="og:title" content="Analyze monthly DO values relative to threshold — anlz_domopep" />
+<meta property="og:description" content="Analyze monthly DO values relative to threshold" />
 
 
 
@@ -121,65 +121,62 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count beach exceedances for enterococcus</h1>
+    <h1>Analyze monthly DO values relative to threshold</h1>
     
-    <div class="hidden name"><code>anlz_entpep.Rd</code></div>
+    <div class="hidden name"><code>anlz_domopep.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Count beach exceedances for enterococcus</p>
+    <p>Analyze monthly DO values relative to threshold</p>
     </div>
 
-    <pre class="usage"><span class='fu'>anlz_entpep</span><span class='op'>(</span><span class='va'>entdat</span>, thr <span class='op'>=</span> <span class='fl'>104</span>, cats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>anlz_domopep</span><span class='op'>(</span><span class='va'>dodat</span>, thr <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>entdat</th>
-      <td><p>result returned from <code><a href='read_pepent.html'>read_pepent</a></code></p></td>
+      <th>dodat</th>
+      <td><p>result returned from <code><a href='read_pepdo.html'>read_pepdo</a></code></p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>numeric value defining threshold for beach closure</p></td>
-    </tr>
-    <tr>
-      <th>cats</th>
-      <td><p>vector of three numeric values defining the color scheme for the report card</p></td>
+      <td><p>numeric indicating appropriate dissolved oxygen thresholds, usually 3 mg/L for acute, 4.8 mg/L for chronic</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>data.frame</code> with counts of beach closures per year for each beach</p>
+    <p>data.frame</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Exceedance threshold for closure is set by default as 104 cfu/100 ml criterion.  This is simply based on counts in a year when any value at any station was above the threshold.</p>
-<p>The <code>outcome</code> column in the output is defined by the numeric interval in <code>cats</code>, closed on the left.  This is used for the color scheme in <code><a href='show_entmatrix.html'>show_entmatrix</a></code>.</p>
+    <p>The <code><a href='dodat.html'>dodat</a></code> data object can be used as input without downloading USGS data</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other analyze: 
 <code><a href='anlz_attainpep.html'>anlz_attainpep</a>()</code>,
 <code><a href='anlz_dodlypep.html'>anlz_dodlypep</a>()</code>,
-<code><a href='anlz_domopep.html'>anlz_domopep</a>()</code>,
+<code><a href='anlz_entpep.html'>anlz_entpep</a>()</code>,
 <code><a href='anlz_medpep.html'>anlz_medpep</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>anlz_entpep</span><span class='op'>(</span><span class='va'>entdat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 280 x 4</span><span>
-#&gt;    Name                     yr closures outcome
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>010        0 green  
-#&gt; </span><span style='color: #555555;'> 2</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>011        0 green  
-#&gt; </span><span style='color: #555555;'> 3</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>012        0 green  
-#&gt; </span><span style='color: #555555;'> 4</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>013        0 green  
-#&gt; </span><span style='color: #555555;'> 5</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>014        0 green  
-#&gt; </span><span style='color: #555555;'> 6</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>015        0 green  
-#&gt; </span><span style='color: #555555;'> 7</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>016        0 green  
-#&gt; </span><span style='color: #555555;'> 8</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>017        0 green  
-#&gt; </span><span style='color: #555555;'> 9</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>018        1 yellow 
-#&gt; </span><span style='color: #555555;'>10</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>019        0 green  
-#&gt; </span><span style='color: #555555;'># … with 270 more rows</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dodat</span><span class='op'>)</span>
+<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'>anlz_domopep</span><span class='op'>(</span><span class='va'>dodat</span><span class='op'>)</span>
+<span class='va'>dat</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 189 x 6</span><span>
+#&gt;    site             yr mo    do_mgl below_ave below_maxrun
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;ord&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Jan    11.6      0                0
+#&gt; </span><span style='color: #555555;'> 2</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Feb    11.9      0                0
+#&gt; </span><span style='color: #555555;'> 3</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Mar    11.7      0                0
+#&gt; </span><span style='color: #555555;'> 4</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Apr     9.55     0                0
+#&gt; </span><span style='color: #555555;'> 5</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 May     7.90     0                0
+#&gt; </span><span style='color: #555555;'> 6</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Jun     5.73     0.3              5
+#&gt; </span><span style='color: #555555;'> 7</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Jul     3.12     1               27
+#&gt; </span><span style='color: #555555;'> 8</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Aug     3.13     1               24
+#&gt; </span><span style='color: #555555;'> 9</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Sep     4.81     0.655            6
+#&gt; </span><span style='color: #555555;'>10</span><span> Peconic River  </span><span style='text-decoration: underline;'>2</span><span>013 Oct     6.03     0.348            7
+#&gt; </span><span style='color: #555555;'># … with 179 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

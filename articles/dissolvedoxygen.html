@@ -88,19 +88,10 @@
 
     
     
-<p>This document describes a potential proof of concept for summarizing and reporting dissolved oxygen (DO) data for the Peconic Estuary. Two continuous USGS monitoring stations collect DO data at locations in or near the Peconic Estuary. The <code>dodat</code> data object includes sample data from these stations. This dataset was obtained using the USGS dataRetrieval R package as follows:</p>
+<p>This vignette describes a proof of concept for summarizing and reporting dissolved oxygen (DO) data for the Peconic Estuary. Two continuous USGS monitoring stations collect DO data at locations in the Peconic Estuary: USGS stations 01304562 in the Peconic River and 01304200 in Orient Harbor. Data at these stations can be downloaded using the <code><a href="../reference/read_pepdo.html">read_pepdo()</a></code> function.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://pubs.usgs.gov/tm/04/a10/">dataRetrieval</a></span><span class="op">)</span>
-
-<span class="co"># get DO data from USGS stations</span>
-<span class="co"># 01304562 is Peconic River, 01304200 is Orient Harbor</span>
-<span class="co"># downloaded data are in UTC</span>
-<span class="co"># for cd column, USGS daily value qualification codes are often “A” (approved for publication) or “P” (provisional data subject to revision)</span>
-<span class="co"># above is from vignette https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html</span>
-<span class="co"># takes a few minutes to dl</span>
-<span class="va">dodat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dataRetrieval/man/readNWISuv.html">readNWISuv</a></span><span class="op">(</span>siteNumbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'01304562'</span>, <span class="st">'01304200'</span><span class="op">)</span>, parameterCd <span class="op">=</span> <span class="st">'00300'</span>, startDate <span class="op">=</span> <span class="st">'2013-01-01'</span>, endDate <span class="op">=</span> <span class="st">'2020-12-31'</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>site <span class="op">=</span> <span class="va">site_no</span>, DateTime <span class="op">=</span> <span class="va">dateTime</span>, do_mgl <span class="op">=</span> <span class="va">X_00300_00000</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DateTime <span class="op">=</span> <span class="fu">with_tz</span><span class="op">(</span><span class="va">DateTime</span>, tzone <span class="op">=</span> <span class="st">'America/Jamaica'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">exdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_pepdo.html">read_pepdo</a></span><span class="op">(</span>site <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'01304562'</span>, <span class="st">'01304200'</span><span class="op">)</span>, nms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Peconic R.'</span>, <span class="st">'Orient Harbor'</span><span class="op">)</span>, startDate <span class="op">=</span> <span class="st">'2020-06-01'</span>, endDate <span class="op">=</span> <span class="st">'2020-06-30'</span><span class="op">)</span></code></pre></div>
+<p>The <code>dodat</code> data object included with the package provides DO data from 2013 to 2020 at the two sites. This takes several minutes to download using the <code><a href="../reference/read_pepdo.html">read_pepdo()</a></code> function, so it is included with the package for ease of use.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dodat</span><span class="op">)</span>
 <span class="co">#&gt;            site            DateTime do_mgl</span>
@@ -113,7 +104,7 @@
 <p>A plot of the raw data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">dodat</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">DateTime</span>, y <span class="op">=</span> <span class="va">do_mgl</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">4.8</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>, colour <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>, colour <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">site</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
@@ -121,171 +112,70 @@
   <span class="fu">labs</span><span class="op">(</span>
     y <span class="op">=</span> <span class="st">'Dissolved oxygen (mg/L)'</span>, 
     x <span class="op">=</span> <span class="cn">NULL</span>, 
-    title <span class="op">=</span> <span class="st">'Dissolved oxygen time series at Orient Harbor (01304200) and Peconic River (01304562)'</span>, 
+    title <span class="op">=</span> <span class="st">'Dissolved oxygen time series at Orient Harbor and Peconic River'</span>, 
     subtitle <span class="op">=</span> <span class="st">'Dashed lines are chronic and acute threhsolds (4.8, 3 mg/L)'</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;"></p>
-<p>Dissolved oxygen data typically show daily and and seasonal variation. The continuous data requires considerable summary to present the data in an easily interpretable format for management decisions and to present the data in a way that expresses condition. For both, acute (3 mg/L) and chronic (4.8 mg/L) dissolved oxygen thresholds can be applied to summarize the data in different ways.</p>
-<p>Further, the impact of low dissolved oxygen concentrations can vary depending on both magnitude and duration of hypoxia/anoxia. As such, condition assessment could also consider how often concentrations fall below a thresholds and for how long. The assessments below speak to both of these needs.</p>
-<p>First, the data are summarized from the continuous (~6 minute observations) to daily averages and summaries.</p>
+<p>Dissolved oxygen data typically show daily and seasonal variation. Summaries of condition should account for variation at both temporal scales. Further, the impact of low dissolved oxygen concentrations on biota can vary depending on both magnitude and duration of hypoxia/anoxia. As such, condition assessment could also consider how often concentrations fall below a thresholds and for how long. The assessments below speak to each of these needs.</p>
+<p>First, the data can be summarized from the continuous (~6 minute observations) to daily averages using the <code>anlz_dodlpep()</code> function. A user-specified threshold can be supplied to the <code>thr</code> argument to summarize the data relative to a value of interest, the default value being the acute threshold of 3 mg/L (an alternative may be the chronic threshold of 4.8 mg/L).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 3 mg/l is acute, 4.8 mg/l is chronic</span>
-<span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="va">dodat</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-    Date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">DateTime</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/tidyverse.html">summarise</a></span><span class="op">(</span>
-    acute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="va">do_mgl</span> <span class="op">&lt;</span> <span class="fl">3</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, 
-    chronic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="va">do_mgl</span> <span class="op">&lt;</span> <span class="fl">4.8</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, 
-    do_mgl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">do_mgl</span><span class="op">)</span>, 
-    .groups <span class="op">=</span> <span class="st">'drop'</span>
-  <span class="op">)</span> 
+<span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/anlz_dodlypep.html">anlz_dodlypep</a></span><span class="op">(</span><span class="va">dodat</span>, thr <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="va">dlysum</span>
-<span class="co">#&gt; # A tibble: 2,857 x 4</span>
-<span class="co">#&gt;    Date       acute chronic do_mgl</span>
-<span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2013-01-01     0       0   11.0</span>
-<span class="co">#&gt;  2 2013-01-02     0       0   11.3</span>
-<span class="co">#&gt;  3 2013-01-03     0       0   11.6</span>
-<span class="co">#&gt;  4 2013-01-04     0       0   11.8</span>
-<span class="co">#&gt;  5 2013-01-05     0       0   11.7</span>
-<span class="co">#&gt;  6 2013-01-06     0       0   11.9</span>
-<span class="co">#&gt;  7 2013-01-07     0       0   12.1</span>
-<span class="co">#&gt;  8 2013-01-08     0       0   12.2</span>
-<span class="co">#&gt;  9 2013-01-09     0       0   12.2</span>
-<span class="co">#&gt; 10 2013-01-10     0       0   11.9</span>
-<span class="co">#&gt; # … with 2,847 more rows</span></code></pre></div>
-<p>Columns for acute and chronic indicate if DO concentrations were below the respective threshold at any point during each day. To address the duration of exposure to undersatured conditions, a cumulative tally of the number of days at which dissolved oxygen fell below is threshold is also calculated. These are present in the <code>acute_cumsum</code> and <code>acute_chronicsum</code> columns.</p>
+<span class="co">#&gt; # A tibble: 5,338 x 7</span>
+<span class="co">#&gt;    site          Date          yr    mo do_mgl below below_cumsum</span>
+<span class="co">#&gt;    &lt;fct&gt;         &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Peconic River 2013-01-01  2013     1   11.0     0            0</span>
+<span class="co">#&gt;  2 Peconic River 2013-01-02  2013     1   11.3     0            0</span>
+<span class="co">#&gt;  3 Peconic River 2013-01-03  2013     1   11.6     0            0</span>
+<span class="co">#&gt;  4 Peconic River 2013-01-04  2013     1   11.6     0            0</span>
+<span class="co">#&gt;  5 Peconic River 2013-01-05  2013     1   11.7     0            0</span>
+<span class="co">#&gt;  6 Peconic River 2013-01-06  2013     1   11.8     0            0</span>
+<span class="co">#&gt;  7 Peconic River 2013-01-07  2013     1   12.0     0            0</span>
+<span class="co">#&gt;  8 Peconic River 2013-01-08  2013     1   12.1     0            0</span>
+<span class="co">#&gt;  9 Peconic River 2013-01-09  2013     1   12.0     0            0</span>
+<span class="co">#&gt; 10 Peconic River 2013-01-10  2013     1   11.7     0            0</span>
+<span class="co">#&gt; # … with 5,328 more rows</span></code></pre></div>
+<p>The last three columns show the daily summarized data. The <code>do_mgl</code> column shows the average DO concentration for each day, the <code>below</code> column shows a 1 (yes) or 0 (no) if the concentration was below the threshold value at any point during a day, and the <code>below_cumsum</code> column shows a cumulative tally of the number of days in each month at which dissolved oxygen fell below the threshold at any point during a day.</p>
+<p>The data can also be summarized by month using the <code><a href="../reference/anlz_domopep.html">anlz_domopep()</a></code> function. Summarizing by month distills the information into a simple format for plotting. Internally, the <code><a href="../reference/anlz_domopep.html">anlz_domopep()</a></code> function uses the <code><a href="../reference/anlz_dodlypep.html">anlz_dodlypep()</a></code> function to first summarize results by day, which are then summarized by month.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="va">dlysum</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span>grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">acute</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>, yr <span class="op">=</span> <span class="fu">year</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span>, mo <span class="op">=</span> <span class="fu">month</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-    acute_cumsum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">acute</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="va">ungroup</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span>grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">chronic</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>, <span class="va">yr</span>, <span class="va">mo</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-    chronic_cumsum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">chronic</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">grp</span><span class="op">)</span>
-<span class="va">dlysum</span>
-<span class="co">#&gt; # A tibble: 2,857 x 9</span>
-<span class="co">#&gt; # Groups:   grp, yr, mo [1,661]</span>
-<span class="co">#&gt;      grp Date       acute chronic do_mgl    yr    mo acute_cumsum chronic_cumsum</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1     1 2013-01-01     0       0   11.0  2013     1            0              0</span>
-<span class="co">#&gt;  2     2 2013-01-02     0       0   11.3  2013     1            0              0</span>
-<span class="co">#&gt;  3     3 2013-01-03     0       0   11.6  2013     1            0              0</span>
-<span class="co">#&gt;  4     4 2013-01-04     0       0   11.8  2013     1            0              0</span>
-<span class="co">#&gt;  5     5 2013-01-05     0       0   11.7  2013     1            0              0</span>
-<span class="co">#&gt;  6     6 2013-01-06     0       0   11.9  2013     1            0              0</span>
-<span class="co">#&gt;  7     7 2013-01-07     0       0   12.1  2013     1            0              0</span>
-<span class="co">#&gt;  8     8 2013-01-08     0       0   12.2  2013     1            0              0</span>
-<span class="co">#&gt;  9     9 2013-01-09     0       0   12.2  2013     1            0              0</span>
-<span class="co">#&gt; 10    10 2013-01-10     0       0   11.9  2013     1            0              0</span>
-<span class="co">#&gt; # … with 2,847 more rows</span></code></pre></div>
-<p>The daily data provides the basis for summarizing seasonal information by month. Summarizing by month distills in the information into an easily digestible format for plotting.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mosum</span> <span class="op">&lt;-</span> <span class="va">dlysum</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span>
-    yr <span class="op">=</span> <span class="fu">year</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span>, 
-    mo <span class="op">=</span> <span class="fu">month</span><span class="op">(</span><span class="va">Date</span>, label <span class="op">=</span> <span class="cn">T</span>, abbr <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/tidyverse.html">summarise</a></span><span class="op">(</span>
-    do_mgl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">do_mgl</span><span class="op">)</span>, 
-    acute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">acute</span><span class="op">)</span>, 
-    acute_cumsum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">acute_cumsum</span><span class="op">)</span>, 
-    chronic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">chronic</span><span class="op">)</span>, 
-    chronic_cumsum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">chronic_cumsum</span><span class="op">)</span>, 
-    .groups <span class="op">=</span> <span class="st">'drop'</span>
-  <span class="op">)</span>
+<code class="sourceCode R"><span class="va">mosum</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/anlz_domopep.html">anlz_domopep</a></span><span class="op">(</span><span class="va">dodat</span>, thr <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="va">mosum</span>
-<span class="co">#&gt; # A tibble: 96 x 7</span>
-<span class="co">#&gt;       yr mo    do_mgl acute acute_cumsum chronic chronic_cumsum</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;ord&gt;  &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  2013 Jan    11.7  0                0   0                  0</span>
-<span class="co">#&gt;  2  2013 Feb    11.8  0                0   0                  0</span>
-<span class="co">#&gt;  3  2013 Mar    11.3  0                0   0                  0</span>
-<span class="co">#&gt;  4  2013 Apr     9.67 0                0   0                  0</span>
-<span class="co">#&gt;  5  2013 May     8.13 0                0   0.161              1</span>
-<span class="co">#&gt;  6  2013 Jun     6.59 0.3              5   0.767             13</span>
-<span class="co">#&gt;  7  2013 Jul     4.94 0.935           29   0.968             30</span>
-<span class="co">#&gt;  8  2013 Aug     5.32 0.806           14   0.871             15</span>
-<span class="co">#&gt;  9  2013 Sep     6.02 0.667            6   0.933             17</span>
-<span class="co">#&gt; 10  2013 Oct     7.29 0.290            8   0.516             12</span>
-<span class="co">#&gt; # … with 86 more rows</span></code></pre></div>
-<p>There are several ways the data were summarized:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>acute</code>: The proportion of days in a month when concentrations in a given day fell below 3 mg/L</li>
-<li>
-<code>chronic</code>: The proportion of days in a month when concentrations in a given day fell below 4.8 mg/L</li>
-<li>
-<code>acute_cumsum</code>: The maximum number of sequential days in a month when concentrations in a given day fell below 3 mg/L</li>
-<li>
-<code>chronic_cumsum</code>: The average number of sequential days in a month when concentrations in a given day fell below 4.8 mg/L</li>
-</ol>
-<p>The first two item address only the number of times hypoxia conditions occurred, whereas the last two items address both the number of instances and duration of hypoxia.</p>
-<p>The first two plot show the first two summaries.</p>
+<span class="co">#&gt; # A tibble: 189 x 6</span>
+<span class="co">#&gt;    site             yr mo    do_mgl below_ave below_maxrun</span>
+<span class="co">#&gt;    &lt;fct&gt;         &lt;dbl&gt; &lt;ord&gt;  &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Peconic River  2013 Jan    11.6      0                0</span>
+<span class="co">#&gt;  2 Peconic River  2013 Feb    11.9      0                0</span>
+<span class="co">#&gt;  3 Peconic River  2013 Mar    11.7      0                0</span>
+<span class="co">#&gt;  4 Peconic River  2013 Apr     9.55     0                0</span>
+<span class="co">#&gt;  5 Peconic River  2013 May     7.90     0                0</span>
+<span class="co">#&gt;  6 Peconic River  2013 Jun     5.73     0.3              5</span>
+<span class="co">#&gt;  7 Peconic River  2013 Jul     3.12     1               27</span>
+<span class="co">#&gt;  8 Peconic River  2013 Aug     3.13     1               24</span>
+<span class="co">#&gt;  9 Peconic River  2013 Sep     4.81     0.655            6</span>
+<span class="co">#&gt; 10 Peconic River  2013 Oct     6.03     0.348            7</span>
+<span class="co">#&gt; # … with 179 more rows</span></code></pre></div>
+<p>The last three columns show the monthly summarized data, where <code>do_mgl</code> is the average of all daily DO averages across the month, <code>below_ave</code> is the proportion of days in a month when concentrations in a given day fell below the threshold (1 would mean all days had an instance of DO below the threshold, 0 would mean none), and <code>below_maxrun()</code> is the maximum number of sequential days in a month when concentrations in a given day fell below the threshold (30 or 31, depending on month, would indicate all days in a month had an instance of DO below the threshold).</p>
+<p>The <code>below_ave</code> and <code>below_maxrun</code> columns summarize the DO data differently depending on how hypoxia/anoxia conditions can be described relative to potential impacts on biological resources. The <code>below_ave</code> column summarizes undersaturation relative to only the number of times hypoxia conditions occurred, whereas the <code>below_maxrun</code> column summarizes undersaturation relative to both the number of instances and duration of hypoxia. In other words, biota may be stressed differently depending on the number of times hypoxia occurs vs how long it may persist. The two measures may indicate similar information, but not always depending on characteristics of the DO time series.</p>
+<p>The summarized monthly data can be plotted with the <code><a href="../reference/show_domatrix.html">show_domatrix()</a></code> function. In this example, the default plot shows the proportion of days in a month when concentrations in a given day fell below a threshold of 3 mg/L.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_domatrix.html">show_domatrix</a></span><span class="op">(</span><span class="va">dodat</span>, thr <span class="op">=</span> <span class="fl">3</span>, show <span class="op">=</span> <span class="st">'below_ave'</span><span class="op">)</span></code></pre></div>
+<p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>The maximum number of sequential days in a month when concentrations in a given day fell below the threshold can also be plotted by changing the <code>show</code> argument.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ylims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2013</span>, <span class="fl">2020</span><span class="op">)</span>
-<span class="va">pthm</span> <span class="op">&lt;-</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">theme</span><span class="op">(</span>
-    axis.title <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, 
-    panel.grid.major <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, 
-    panel.grid.minor <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, 
-    legend.title <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">mosum</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mo</span>, y <span class="op">=</span> <span class="va">yr</span>, fill <span class="op">=</span> <span class="va">acute</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_tile</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">ylims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ylims</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_fill_gradient2</span><span class="op">(</span>low <span class="op">=</span> <span class="st">'green'</span>, mid <span class="op">=</span> <span class="st">'yellow'</span>, high <span class="op">=</span> <span class="st">'red'</span>, midpoint <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="va">pthm</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>
-    subtitle <span class="op">=</span> <span class="st">'(a) The proportion of days each month when concentrations in a given day fell below 3 mg/L'</span>
-  <span class="op">)</span>
-  
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">mosum</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mo</span>, y <span class="op">=</span> <span class="va">yr</span>, fill <span class="op">=</span> <span class="va">chronic</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_tile</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">ylims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ylims</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_fill_gradient2</span><span class="op">(</span>low <span class="op">=</span> <span class="st">'green'</span>, mid <span class="op">=</span> <span class="st">'yellow'</span>, high <span class="op">=</span> <span class="st">'red'</span>, midpoint <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="va">pthm</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>
-    subtitle <span class="op">=</span> <span class="st">'(b) The proportion of days each month when concentrations in a given day fell below 4.8 mg/L'</span>
-  <span class="op">)</span>
-
-<span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span> <span class="fu">plot_layout</span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_domatrix.html">show_domatrix</a></span><span class="op">(</span><span class="va">dodat</span>, thr <span class="op">=</span> <span class="fl">3</span>, show <span class="op">=</span> <span class="st">'below_maxrun'</span><span class="op">)</span></code></pre></div>
 <p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;"></p>
-<p>The next two plots show the third and fourth summaries that address severity and duration of hypoxia.</p>
+<p>The threshold can also be changed. For example, the chronic threshold of 4.8 mg/L shows conditions relative to a more conservative threshold.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">mosum</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mo</span>, y <span class="op">=</span> <span class="va">yr</span>, fill <span class="op">=</span> <span class="va">acute_cumsum</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_tile</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">ylims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ylims</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_fill_gradient2</span><span class="op">(</span>low <span class="op">=</span> <span class="st">'green'</span>, mid <span class="op">=</span> <span class="st">'yellow'</span>, high <span class="op">=</span> <span class="st">'red'</span>, midpoint <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">+</span>
-  <span class="va">pthm</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>
-    subtitle <span class="op">=</span> <span class="st">'(a) The maximum number of sequential days in a month when concentrations in a given day fell below 3 mg/L'</span>
-  <span class="op">)</span>
-  
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">mosum</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mo</span>, y <span class="op">=</span> <span class="va">yr</span>, fill <span class="op">=</span> <span class="va">chronic_cumsum</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_tile</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">ylims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ylims</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">scale_fill_gradient2</span><span class="op">(</span>low <span class="op">=</span> <span class="st">'green'</span>, mid <span class="op">=</span> <span class="st">'yellow'</span>, high <span class="op">=</span> <span class="st">'red'</span>, midpoint <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">+</span>
-  <span class="va">pthm</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>
-    subtitle <span class="op">=</span> <span class="st">'(b) The maximum number of sequential days in a month when concentrations in a given day fell below 4.8 mg/L'</span>
-  <span class="op">)</span>
-
-<span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span> <span class="fu">plot_layout</span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_domatrix.html">show_domatrix</a></span><span class="op">(</span><span class="va">dodat</span>, thr <span class="op">=</span> <span class="fl">4.8</span>, show <span class="op">=</span> <span class="st">'below_ave'</span><span class="op">)</span></code></pre></div>
 <p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;"></p>
-<p>Plotting the results provides insights into hypoxia patterns at the site depending on how under-saturated conditions were summarized.</p>
-  </div>
+<p>Plotting the results provides insights into hypoxia patterns at the site depending on how under-saturated conditions were summarized. Additional considerations may include:</p>
+<ol style="list-style-type: decimal">
+<li>Relevance of a threshold to biological indicator</li>
+<li>Spatial extent of the indicators</li>
+<li>Breakpoints for management decisions</li>
+</ol>
+</div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
