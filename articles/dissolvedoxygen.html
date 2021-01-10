@@ -90,46 +90,46 @@
     
 <p>This document describes a potential proof of concept for summarizing and reporting dissolved oxygen (DO) data for the Peconic Estuary. Two continuous USGS monitoring stations collect DO data at locations in or near the Peconic Estuary. The <code>dodat</code> data object includes sample data from these stations. This dataset was obtained using the USGS dataRetrieval R package as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">dataRetrieval</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://pubs.usgs.gov/tm/04/a10/">dataRetrieval</a></span><span class="op">)</span>
 
 <span class="co"># get DO data from USGS stations</span>
-<span class="co"># 01304562 is Peconic River</span>
+<span class="co"># 01304562 is Peconic River, 01304200 is Orient Harbor</span>
 <span class="co"># downloaded data are in UTC</span>
 <span class="co"># for cd column, USGS daily value qualification codes are often “A” (approved for publication) or “P” (provisional data subject to revision)</span>
 <span class="co"># above is from vignette https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html</span>
 <span class="co"># takes a few minutes to dl</span>
-<span class="va">dodat</span> <span class="op">&lt;-</span> <span class="fu">readNWISuv</span><span class="op">(</span>siteNumbers <span class="op">=</span> <span class="st">'01304562'</span>, parameterCd <span class="op">=</span> <span class="st">'00300'</span>, startDate <span class="op">=</span> <span class="st">'2013-01-01'</span>, endDate <span class="op">=</span> <span class="st">'2020-12-31'</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">dodat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dataRetrieval/man/readNWISuv.html">readNWISuv</a></span><span class="op">(</span>siteNumbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'01304562'</span>, <span class="st">'01304200'</span><span class="op">)</span>, parameterCd <span class="op">=</span> <span class="st">'00300'</span>, startDate <span class="op">=</span> <span class="st">'2013-01-01'</span>, endDate <span class="op">=</span> <span class="st">'2020-12-31'</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>site <span class="op">=</span> <span class="va">site_no</span>, DateTime <span class="op">=</span> <span class="va">dateTime</span>, do_mgl <span class="op">=</span> <span class="va">X_00300_00000</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DateTime <span class="op">=</span> <span class="fu">with_tz</span><span class="op">(</span><span class="va">DateTime</span>, tzone <span class="op">=</span> <span class="st">'America/Jamaica'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dodat</span><span class="op">)</span>
-<span class="co">#&gt;       site            DateTime do_mgl</span>
-<span class="co">#&gt; 1 01304200 2013-01-01 00:00:00   11.2</span>
-<span class="co">#&gt; 2 01304200 2013-01-01 00:06:00   11.2</span>
-<span class="co">#&gt; 3 01304200 2013-01-01 00:12:00   11.2</span>
-<span class="co">#&gt; 4 01304200 2013-01-01 00:18:00   11.2</span>
-<span class="co">#&gt; 5 01304200 2013-01-01 00:24:00   11.2</span>
-<span class="co">#&gt; 6 01304200 2013-01-01 00:30:00   11.2</span></code></pre></div>
+<span class="co">#&gt;            site            DateTime do_mgl</span>
+<span class="co">#&gt; 1 Orient Harbor 2013-01-01 00:00:00   11.2</span>
+<span class="co">#&gt; 2 Orient Harbor 2013-01-01 00:06:00   11.2</span>
+<span class="co">#&gt; 3 Orient Harbor 2013-01-01 00:12:00   11.2</span>
+<span class="co">#&gt; 4 Orient Harbor 2013-01-01 00:18:00   11.2</span>
+<span class="co">#&gt; 5 Orient Harbor 2013-01-01 00:24:00   11.2</span>
+<span class="co">#&gt; 6 Orient Harbor 2013-01-01 00:30:00   11.2</span></code></pre></div>
 <p>A plot of the raw data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">dodat</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">DateTime</span>, y <span class="op">=</span> <span class="va">do_mgl</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">4.8</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>, colour <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>, colour <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">site</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">labs</span><span class="op">(</span>
     y <span class="op">=</span> <span class="st">'Dissolved oxygen (mg/L)'</span>, 
     x <span class="op">=</span> <span class="cn">NULL</span>, 
-    title <span class="op">=</span> <span class="st">'Dissolved oxygen time series at USGS station 01304562 (Peconic R.)'</span>, 
+    title <span class="op">=</span> <span class="st">'Dissolved oxygen time series at Orient Harbor (01304200) and Peconic River (01304562)'</span>, 
     subtitle <span class="op">=</span> <span class="st">'Dashed lines are chronic and acute threhsolds (4.8, 3 mg/L)'</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="dissolvedoxygen_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Dissolved oxygen data typically show daily and and seasonal variation. The continuous data requires considerable summary to present the data in an easily interpretable format for management decisions and to present the data in a way that expresses condition. For both, acute (3 mg/L) and chronic (4.8 mg/L) dissolved oxygen thresholds can be applied to summarize the data in different ways.</p>
 <p>Further, the impact of low dissolved oxygen concentrations can vary depending on both magnitude and duration of hypoxia/anoxia. As such, condition assessment could also consider how often concentrations fall below a thresholds and for how long. The assessments below speak to both of these needs.</p>
 <p>First, the data are summarized from the continuous (~6 minute observations) to daily averages and summaries.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># 3 mg/l is acute, 4.8 mg/l is chronic</span>
+<code class="sourceCode R"><span class="co"># 3 mg/l is acute, 4.8 mg/l is chronic</span>
 <span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="va">dodat</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     Date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">DateTime</span><span class="op">)</span>
@@ -156,7 +156,7 @@
 <span class="co">#&gt;  9 2013-01-09     0       0   12.2</span>
 <span class="co">#&gt; 10 2013-01-10     0       0   11.9</span>
 <span class="co">#&gt; # … with 2,847 more rows</span></code></pre></div>
-<p>Indicator columns for acute and chronic indicate if DO concentrations were below the respective threshold at any point during each day. To address the duration of exposure to undersatured conditions, a cumulative tally of the number of days at which dissolved oxygen fell below is threshold is also calculated. These are present in the <code>acute_cumsum</code> and <code>acute_chronicsum</code> columns.</p>
+<p>Columns for acute and chronic indicate if DO concentrations were below the respective threshold at any point during each day. To address the duration of exposure to undersatured conditions, a cumulative tally of the number of days at which dissolved oxygen fell below is threshold is also calculated. These are present in the <code>acute_cumsum</code> and <code>acute_chronicsum</code> columns.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dlysum</span> <span class="op">&lt;-</span> <span class="va">dlysum</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span>grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">acute</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>, yr <span class="op">=</span> <span class="fu">year</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span>, mo <span class="op">=</span> <span class="fu">month</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
