@@ -143,10 +143,6 @@
       <th>thr</th>
       <td><p>numeric value defining threshold for exceedance</p></td>
     </tr>
-    <tr>
-      <th>cats</th>
-      <td><p>vector of three numeric values defining the color scheme for the report card</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -155,7 +151,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The exceedance threshold is set by default as 104 cfu/100 ml criterion.  This is simply based on counts in a year when any value at any station was above the threshold for each 24 hour period in the record.</p>
-<p>The <code>outcome</code> column in the output is defined by the numeric interval in <code>cats</code>, closed on the left.  This is used for the color scheme in <code><a href='show_entmatrix.html'>show_entmatrix</a></code>.</p>
+<p>The <code>samples</code> column shows how many days of the year were sampled at each beach and the <code>perexceedance</code> column shows what percentage of samples were above the threshold.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other analyze: 
@@ -166,20 +162,20 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>anlz_entpep</span><span class='op'>(</span><span class='va'>entdat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 280 x 4</span><span>
-#&gt;    Name                     yr exceedances outcome
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>010           0 green  
-#&gt; </span><span style='color: #555555;'> 2</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>011           0 green  
-#&gt; </span><span style='color: #555555;'> 3</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>012           0 green  
-#&gt; </span><span style='color: #555555;'> 4</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>013           0 green  
-#&gt; </span><span style='color: #555555;'> 5</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>014           0 green  
-#&gt; </span><span style='color: #555555;'> 6</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>015           0 green  
-#&gt; </span><span style='color: #555555;'> 7</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>016           0 green  
-#&gt; </span><span style='color: #555555;'> 8</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>017           0 green  
-#&gt; </span><span style='color: #555555;'> 9</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>018           1 yellow 
-#&gt; </span><span style='color: #555555;'>10</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>019           0 green  
-#&gt; </span><span style='color: #555555;'># … with 270 more rows</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 308 x 5</span><span>
+#&gt;    Name                     yr samples exceedances perexceedances
+#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>010       3           0          0    
+#&gt; </span><span style='color: #555555;'> 2</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>011       3           0          0    
+#&gt; </span><span style='color: #555555;'> 3</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>012       4           0          0    
+#&gt; </span><span style='color: #555555;'> 4</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>013       3           0          0    
+#&gt; </span><span style='color: #555555;'> 5</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>014       4           0          0    
+#&gt; </span><span style='color: #555555;'> 6</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>015       3           0          0    
+#&gt; </span><span style='color: #555555;'> 7</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>016       5           0          0    
+#&gt; </span><span style='color: #555555;'> 8</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>017       3           0          0    
+#&gt; </span><span style='color: #555555;'> 9</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>018       6           1          0.167
+#&gt; </span><span style='color: #555555;'>10</span><span> Alberts Landing Beach  </span><span style='text-decoration: underline;'>2</span><span>019       3           0          0    
+#&gt; </span><span style='color: #555555;'># … with 298 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
