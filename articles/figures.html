@@ -146,6 +146,14 @@
 
 <span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">'~/Desktop/entmatrix.png'</span>, height <span class="op">=</span> <span class="fl">6</span>, width <span class="op">=</span> <span class="fl">7</span>, res <span class="op">=</span> <span class="fl">300</span>, units <span class="op">=</span> <span class="st">'in'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># pathogen matrix as counts -----------------------------------------------</span>
+
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/show_entmatrix.html">show_entmatrix</a></span><span class="op">(</span><span class="va">entdat</span>, thr <span class="op">=</span> <span class="fl">104</span>, txtsz <span class="op">=</span> <span class="fl">2</span>, show <span class="op">=</span> <span class="st">'exceedances'</span><span class="op">)</span> 
+
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">'~/Desktop/entmatrix2.png'</span>, height <span class="op">=</span> <span class="fl">6</span>, width <span class="op">=</span> <span class="fl">7</span>, res <span class="op">=</span> <span class="fl">300</span>, units <span class="op">=</span> <span class="st">'in'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
   </div>
 
