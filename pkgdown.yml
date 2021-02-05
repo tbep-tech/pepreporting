@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   Introduction: Introduction.html
   dissolvedoxygen: dissolvedoxygen.html
+  figures: figures.html
   pathogens: pathogens.html
-last_built: 2021-02-05T12:22Z
+last_built: 2021-02-05T13:29Z
 
