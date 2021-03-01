@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dissolved oxygen data for USGS stations — dodat • peptools</title>
+<title>Bathing beaches — beaches • peptools</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Dissolved oxygen data for USGS stations — dodat" />
-<meta property="og:description" content="Dissolved oxygen data for USGS stations" />
+<meta property="og:title" content="Bathing beaches — beaches" />
+<meta property="og:description" content="Bathing beaches" />
 
 
 
@@ -124,16 +124,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dissolved oxygen data for USGS stations</h1>
+    <h1>Bathing beaches</h1>
     
-    <div class="hidden name"><code>dodat.Rd</code></div>
+    <div class="hidden name"><code>beaches.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Dissolved oxygen data for USGS stations</p>
+    <p>Bathing beaches</p>
     </div>
 
-    <pre class="usage"><span class='va'>dodat</span></pre>
+    <pre class="usage"><span class='va'>beaches</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -142,7 +142,7 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other utilities: 
-<code><a href='beaches.html'>beaches</a></code>,
+<code><a href='dodat.html'>dodat</a></code>,
 <code><a href='entdat.html'>entdat</a></code>,
 <code><a href='pepseg.html'>pepseg</a></code>,
 <code><a href='pepstations.html'>pepstations</a></code>,
@@ -152,10 +152,15 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-<span class='co'># 01304562 is Peconic River, 01304200 is Orient Harbor</span>
-<span class='va'>dodat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_pepdo.html'>read_pepdo</a></span><span class='op'>(</span>site <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'01304562'</span>, <span class='st'>'01304200'</span><span class='op'>)</span>, nms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Peconic River'</span>, <span class='st'>'Orient Harbor'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>dodat</span>, file <span class='op'>=</span> <span class='st'>'data/dodat.RData'</span>, compress <span class='op'>=</span> <span class='st'>'xz'</span><span class='op'>)</span>
+<span class='va'>beaches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'inst/extdata/beaches.csv'</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sf.html'>st_as_sf</a></span><span class='op'>(</span>coords <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Longitude'</span>, <span class='st'>'Latitude'</span><span class='op'>)</span>, crs <span class='op'>=</span> <span class='st'>'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>beaches</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>'Name'</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>beaches</span>, file <span class='op'>=</span> <span class='st'>'data/beaches.RData'</span><span class='op'>)</span>
 
 <span class='op'>}</span>
 </div></pre>
