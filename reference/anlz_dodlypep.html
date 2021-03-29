@@ -133,7 +133,7 @@
     <p>Analyze daily DO values relative to threshold</p>
     </div>
 
-    <pre class="usage"><span class='fu'>anlz_dodlypep</span><span class='op'>(</span><span class='va'>dodat</span>, thr <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>anlz_dodlypep</span><span class='op'>(</span><span class='va'>dodat</span>, thr <span class='op'>=</span> <span class='fl'>3</span>, impute <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +146,10 @@
       <th>thr</th>
       <td><p>numeric indicating appropriate dissolved oxygen thresholds, usually 3 mg/L for acute, 4.8 mg/L for chronic</p></td>
     </tr>
+    <tr>
+      <th>impute</th>
+      <td><p>logical indicating of missing dissolved oxygen values are imputed with the year, month, site average</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -154,6 +158,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code><a href='dodat.html'>dodat</a></code> data object can be used as input without downloading USGS data</p>
+<p>If <code>impute = TRUE</code>, missing dissolved oxygen values in the complete daily time series are imputed to the average for the year, month, site combination. This is often necessary to create summary values that make sense. For example, if a month has incomplete data, the maximum <code>below_cumsum</code> value will not show 30 or 31 days even if every day in the observed record is below the threshold.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other analyze: 
@@ -166,7 +171,7 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dodat</span><span class='op'>)</span>
 <span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'>anlz_dodlypep</span><span class='op'>(</span><span class='va'>dodat</span><span class='op'>)</span>
 <span class='va'>dat</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5,338 x 7</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5,844 x 7</span><span>
 #&gt;    site          Date          yr    mo do_mgl below below_cumsum
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Peconic River 2013-01-01  </span><span style='text-decoration: underline;'>2</span><span>013     1   11.0     0            0
@@ -179,7 +184,7 @@
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Peconic River 2013-01-08  </span><span style='text-decoration: underline;'>2</span><span>013     1   12.1     0            0
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Peconic River 2013-01-09  </span><span style='text-decoration: underline;'>2</span><span>013     1   12.0     0            0
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> Peconic River 2013-01-10  </span><span style='text-decoration: underline;'>2</span><span>013     1   11.7     0            0
-#&gt; </span><span style='color: #949494;'># … with 5,328 more rows</span><span></div></span></pre>
+#&gt; </span><span style='color: #949494;'># … with 5,834 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
