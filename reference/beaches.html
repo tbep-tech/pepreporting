@@ -147,7 +147,10 @@
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
 <span class='va'>beaches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'inst/extdata/beaches.csv'</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sf.html'>st_as_sf</a></span><span class='op'>(</span>coords <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Longitude'</span>, <span class='st'>'Latitude'</span><span class='op'>)</span>, crs <span class='op'>=</span> <span class='st'>'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'</span><span class='op'>)</span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sf.html'>st_as_sf</a></span><span class='op'>(</span>
+     coords <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Longitude'</span>, <span class='st'>'Latitude'</span><span class='op'>)</span>, 
+     crs <span class='op'>=</span> <span class='st'>'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'</span>
+  <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>beaches</span>, file <span class='op'>=</span> <span class='st'>'data/beaches.RData'</span><span class='op'>)</span>
 
